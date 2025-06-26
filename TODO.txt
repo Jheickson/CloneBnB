@@ -1,0 +1,6 @@
+PARA DIA 27/06:
+- Cancelar/editar reservas
+- Expandir tela de Perfil
+
+PARA DIA 11/07
+Entregar um artigo no estilo SBC
