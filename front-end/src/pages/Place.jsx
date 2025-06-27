@@ -88,6 +88,15 @@ const Place = () => {
     }
   };
 
+  const handleCancel = async (idBooking) => {
+    try {
+      await axios.delete(`/bookings/${idBooking}`);
+      setBooking(null);
+    } catch (error) {
+      alert("Erro ao cancelar reserva!");
+    }
+  };
+
   if (redirect) return <Navigate to="/account/bookings" />;
 
   if (!place) return <></>;
@@ -125,7 +134,12 @@ const Place = () => {
         </div>
 
         {/* Booking */}
-        {booking ? <Booking booking={booking} place={true} /> : ""}
+        {booking ? (
+          <Booking booking={booking} place={true} onCancel={handleCancel} />
+        ) : (
+          ""
+        )}
+
 
         {/* Grade de Imagens */}
         <div className="relative grid aspect-square gap-4 overflow-hidden rounded-2xl sm:aspect-[3/2] sm:grid-cols-[2fr_1fr] sm:grid-rows-2">

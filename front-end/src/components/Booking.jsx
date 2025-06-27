@@ -1,7 +1,20 @@
 import React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
-const Booking = ({ booking, place = false }) => {
+const Booking = ({ booking, place = false, onCancel }) => {
+  const handleCancel = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      await axios.delete(`/bookings/${booking._id}`);
+      onCancel && onCancel(booking._id);
+    } catch (error) {
+      alert("Erro ao cancelar reserva!");
+    }
+  };
+
   return (
     <Link
       to={`/place/${booking.place._id}`}
@@ -52,6 +65,15 @@ const Booking = ({ booking, place = false }) => {
           </p>
         </div>
       </div>
+
+      {!place && (
+        <button
+          onClick={handleCancel}
+          className="bg-red-500 ml-auto rounded-full px-4 py-2 text-white"
+        >
+          Cancelar
+        </button>
+      )}
     </Link>
   );
 };

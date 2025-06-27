@@ -15,9 +15,17 @@ const AccBookings = () => {
   }, []);
 
   return (
+
     <div className="flex w-full max-w-7xl flex-col gap-8">
+
       {bookings.map((booking) => (
-        <Booking booking={booking} key={booking._id} />
+        <Booking
+          booking={booking}
+          key={booking._id}
+          onCancel={(id) =>
+            setBookings((prev) => prev.filter((b) => b._id !== id))
+          }
+        />
       ))}
     </div>
   );

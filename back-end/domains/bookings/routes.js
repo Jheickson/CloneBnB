@@ -52,4 +52,29 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  connectDb();
+
+  const { id } = req.params;
+
+  try {
+    const userInfo = await JWTVerify(req);
+
+    const bookingDoc = await Booking.findById(id);
+
+    if (!bookingDoc) return res.status(404).json("Reserva não encontrada");
+
+    if (bookingDoc.user.toString() !== userInfo._id)
+      return res.status(403).json("A reserva não pertence ao usuário");
+
+    await bookingDoc.deleteOne();
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Deu erro ao cancelar a Reserva");
+  }
+});
+
+
 export default router;
