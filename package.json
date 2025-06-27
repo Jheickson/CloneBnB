@@ -1,5 +1,5 @@
 {
-  "name": "clonebnb",
+  "name": "hashbnb-youtube",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
@@ -33,5 +33,17 @@
   "scripts": {
     "start": "npm run start --prefix back-end",
     "build": "npm install --prefix back-end && npm install --prefix front-end && npm run build --prefix front-end"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fullstackjornada/hashbnb-youtube.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fullstackjornada/hashbnb-youtube/issues"
+  },
+  "homepage": "https://github.com/fullstackjornada/hashbnb-youtube#readme",
+  "description": ""
 }

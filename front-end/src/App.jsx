@@ -9,13 +9,10 @@ import Account from "./pages/Account";
 import Header from "./components/Header";
 import Place from "./pages/Place";
 
-const API_URL =
-  import.meta.env.VITE_API_URL ??
-  (import.meta.env.MODE === "development"
+axios.defaults.baseURL =
+  import.meta.env.MODE === "development"
     ? "http://localhost:3001/api"
-    : "https://hashbnb-youtube.onrender.com");
-
-axios.defaults.baseURL = API_URL;
+    : "https://hashbnb-youtube.onrender.com";
 
 axios.defaults.withCredentials = true;
 

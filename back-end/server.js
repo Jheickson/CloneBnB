@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import routes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import path, { dirname } from "node:path";
-import "dotenv/config";
 
 export const app = express();
 
@@ -13,11 +12,9 @@ export const __dirname = dirname(__filename);
 
 app.use(express.json());
 app.use(cookieParser());
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
-
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
