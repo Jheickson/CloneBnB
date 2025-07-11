@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// JWT verification removed: return all places
 router.get("/owner", async (req, res) => {
   connectDb();
 
@@ -92,6 +93,7 @@ router.post("/", async (req, res) => {
   connectDb();
 
   const {
+    owner,
     title,
     city,
     photos,

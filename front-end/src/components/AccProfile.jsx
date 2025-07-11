@@ -10,6 +10,7 @@ const AccProfile = () => {
   const [redirect, setRedirect] = useState(false);
   const [bookingCount, setBookingCount] = useState(0);
   const [placeCount, setPlaceCount] = useState(0);
+  const [bookingTotalValue, setBookingTotalValue] = useState(0);
 
   useEffect(() => {
     const axiosGet = async () => {
@@ -18,6 +19,8 @@ const AccProfile = () => {
         const { data: places } = await axios.get("/places/owner");
         setBookingCount(bookings.length);
         setPlaceCount(places.length);
+        const total = bookings.reduce((acc, b) => acc + (b.total || 0), 0);
+        setBookingTotalValue(total);
       } catch (error) { }
     };
 
@@ -75,9 +78,13 @@ const AccProfile = () => {
           <span className="font-medium">{bookingCount}</span>
         </div>
         <div className="flex justify-between items-center">
+          <span className="text-gray-600">Valor total das reservas:</span>
+          <span className="font-medium">R$ {bookingTotalValue.toLocaleString()}</span>
+        </div>
+        {/* <div className="flex justify-between items-center">
           <span className="text-gray-600">Lugares cadastrados:</span>
           <span className="font-medium">{placeCount}</span>
-        </div>
+        </div> */}
       </div>
 
       <button

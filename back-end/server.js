@@ -11,6 +11,13 @@ export const __dirname = dirname(__filename);
 
 app.use(express.json());
 app.use(cookieParser());
+// allow all CORS requests
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use("/tmp", express.static(__dirname + "/tmp"));
 app.use(express.static(path.join(__dirname, "../front-end/dist")));
 app.use("/api", routes);

@@ -3,7 +3,7 @@ import { Router } from "express";
 import { connectDb } from "../../config/db.js";
 import User from "./model.js";
 import bcrypt from "bcryptjs";
-
+import { JWTSign } from "../../utils/jwt.js";
 
 const router = Router();
 const bcryptSalt = bcrypt.genSaltSync();
@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// JWT verification removed: always return null
 router.get("/profile", async (req, res) => {
   res.json(null);
 });

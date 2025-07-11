@@ -1,10 +1,10 @@
 import { Router } from "express";
 import Booking from "./model.js";
 import { connectDb } from "../../config/db.js";
-import mongoose from "mongoose";
 
 const router = Router();
 
+// JWT verification removed: return all bookings
 router.get("/owner", async (req, res) => {
   connectDb();
 
@@ -47,33 +47,11 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Validate ID format if needed (optional)
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json("ID inválido");
-    }
+    await Booking.findByIdAndDelete(id);
 
-    // Find and verify the booking
-    const bookingDoc = await Booking.findById(id);
-
-    if (!bookingDoc) {
-      return res.status(404).json("Reserva não encontrada");
-    }
-
-    // Delete the document
-    await bookingDoc.deleteOne();
-
-    // 204 is more appropriate for deletions
     return res.status(204).end();
-
   } catch (error) {
     console.error("Delete error:", error);
-
-    // Handle specific errors
-    if (error.name === 'CastError') {
-      return res.status(400).json("ID inválido");
-    }
-
-    // Generic error response
     return res.status(500).json("Erro ao cancelar a reserva");
   }
 });
