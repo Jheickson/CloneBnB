@@ -3,12 +3,10 @@ import { Router } from "express";
 import { connectDb } from "../../config/db.js";
 import User from "./model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { JWTVerify, JWTSign } from "../../utils/jwt.js";
+
 
 const router = Router();
 const bcryptSalt = bcrypt.genSaltSync();
-const { JWT_SECRET_KEY } = process.env;
 
 router.get("/", async (req, res) => {
   connectDb();
@@ -23,9 +21,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  const userInfo = await JWTVerify(req);
-
-  res.json(userInfo);
+  res.json(null);
 });
 
 router.post("/", async (req, res) => {
@@ -44,13 +40,7 @@ router.post("/", async (req, res) => {
     const { _id } = newUserDoc;
     const newUserObj = { name, email, _id };
 
-    try {
-      const token = await JWTSign(newUserObj);
-
-      res.cookie("token", token).json(newUserObj);
-    } catch (error) {
-      res.status(500).json("Erro ao assinar com o JWT", error);
-    }
+    res.json(newUserObj);
   } catch (error) {
     res.status(500).json(error);
     throw error;
@@ -71,14 +61,7 @@ router.post("/login", async (req, res) => {
 
       if (passwordCorrect) {
         const newUserObj = { name, email, _id };
-        try {
-          const token = await JWTSign(newUserObj);
-
-          res.cookie("token", token).json(newUserObj);
-        } catch (error) {
-          console.error(error);
-          res.status(500).json("Erro ao assinar com o JWT");
-        }
+        res.json(newUserObj);
       } else {
         res.status(400).json("Senha inválida!");
       }
@@ -91,7 +74,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  res.clearCookie("token").json("Deslogado com sucesso!");
+  res.json("Deslogado com sucesso!");
 });
 
 export default router;

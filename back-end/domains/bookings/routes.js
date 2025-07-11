@@ -1,7 +1,7 @@
 import { Router } from "express";
 import Booking from "./model.js";
 import { connectDb } from "../../config/db.js";
-import { JWTVerify } from "../../utils/jwt.js";
+import mongoose from "mongoose";
 
 const router = Router();
 
@@ -9,21 +9,12 @@ router.get("/owner", async (req, res) => {
   connectDb();
 
   try {
-    const { _id: id } = await JWTVerify(req);
+    const bookingDocs = await Booking.find().populate("place");
 
-    try {
-      const bookingDocs = await Booking.find({ user: id }).populate("place");
-
-      res.json(bookingDocs);
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .json("Deu erro ao buscar todas as Reservas daquele usuário");
-    }
+    res.json(bookingDocs);
   } catch (error) {
     console.error(error);
-    res.status(500).json("Deu erro ao validar o token do usuário");
+    res.status(500).json("Deu erro ao buscar todas as Reservas");
   }
 });
 
@@ -56,9 +47,6 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Verify JWT
-    const userInfo = await JWTVerify(req);
-
     // Validate ID format if needed (optional)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json("ID inválido");
@@ -69,11 +57,6 @@ router.delete("/:id", async (req, res) => {
 
     if (!bookingDoc) {
       return res.status(404).json("Reserva não encontrada");
-    }
-
-    // Verify ownership
-    if (bookingDoc.user.toString() !== userInfo._id) {
-      return res.status(403).json("A reserva não pertence ao usuário");
     }
 
     // Delete the document

@@ -1,6 +1,5 @@
 import { Router } from "express";
 import Place from "./model.js";
-import { JWTVerify } from "../../utils/jwt.js";
 import { connectDb } from "../../config/db.js";
 import { sendToS3, downloadImage, uploadImage } from "./controller.js";
 
@@ -23,19 +22,12 @@ router.get("/owner", async (req, res) => {
   connectDb();
 
   try {
-    const userInfo = await JWTVerify(req);
+    const placeDocs = await Place.find();
 
-    try {
-      const placeDocs = await Place.find({ owner: userInfo._id });
-
-      res.json(placeDocs);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json("Deu erro encontrar as Acomodações");
-    }
+    res.json(placeDocs);
   } catch (error) {
     console.error(error);
-    res.status(500).json("Deu erro verificar o usuário");
+    res.status(500).json("Deu erro encontrar as Acomodações");
   }
 });
 
@@ -113,10 +105,7 @@ router.post("/", async (req, res) => {
   } = req.body;
 
   try {
-    const { _id: owner } = await JWTVerify(req);
-
     const newPlaceDoc = await Place.create({
-      owner,
       title,
       city,
       photos,
