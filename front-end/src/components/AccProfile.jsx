@@ -74,10 +74,10 @@ const AccProfile = () => {
           <span className="text-gray-600">Total de reservas:</span>
           <span className="font-medium">{bookingCount}</span>
         </div>
-        <div className="flex justify-between items-center">
+        {/* <div className="flex justify-between items-center">
           <span className="text-gray-600">Lugares cadastrados:</span>
           <span className="font-medium">{placeCount}</span>
-        </div>
+        </div> */}
       </div>
 
       <button
