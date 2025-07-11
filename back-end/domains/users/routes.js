@@ -3,12 +3,10 @@ import { Router } from "express";
 import { connectDb } from "../../config/db.js";
 import User from "./model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { JWTVerify, JWTSign } from "../../utils/jwt.js";
+import { JWTSign } from "../../utils/jwt.js";
 
 const router = Router();
 const bcryptSalt = bcrypt.genSaltSync();
-const { JWT_SECRET_KEY } = process.env;
 
 router.get("/", async (req, res) => {
   connectDb();
@@ -22,10 +20,9 @@ router.get("/", async (req, res) => {
   }
 });
 
+// JWT verification removed: always return null
 router.get("/profile", async (req, res) => {
-  const userInfo = await JWTVerify(req);
-
-  res.json(userInfo);
+  res.json(null);
 });
 
 router.post("/", async (req, res) => {
